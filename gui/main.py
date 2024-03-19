@@ -30,8 +30,11 @@ methods_buttons = {
     'simpson_button': simpson
 }
 
+
+
 function = f1
-method = left_rectangles
+proper_method = left_rectangles
+improper_method = left_rectangles
 a = 0
 b = 0
 n = 4
@@ -97,11 +100,11 @@ class App(QMainWindow):
             function = functions_buttons[sender.objectName()]
 
     def method_radio_button_clicked(self):
-        global method
+        global proper_method
 
         sender = self.sender()
         if sender.isChecked():
-            method = methods_buttons[sender.objectName()]
+            proper_method = methods_buttons[sender.objectName()]
 
     def load_function_imgs(self):
         pixmap = QPixmap("img/functions/f1.png")
@@ -149,6 +152,8 @@ class App(QMainWindow):
         self.plot_label.setScaledContents(True)
 
     def fill_table(self, log):
+        self.history_table.clear()
+
         num_rows = len(log)
         num_cols = len(log[0])
 
@@ -178,9 +183,12 @@ class App(QMainWindow):
         self.draw_plot()
 
         try:
-            log = method(function, a, b, eps)
+            log = proper_method(function, a, b, eps)
         except ValueError:
             QMessageBox.warning(self, 'Error', 'Invalid segment [a, b]. Check the domain of the chosen function')
+            return
+        except Exception as e:
+            QMessageBox.warning(self, 'Error', str(e))
             return
 
         self.fill_table(log)

@@ -1,4 +1,10 @@
+from compmath.calc._improper_integral import check_convergence
+
+
 def left_rectangles(f, a, b, eps=1e-2):
+    if not check_convergence(f, a, b):
+        raise Exception('Integral diverges')
+
     a += 1e-6
     b -= 1e-6
 
@@ -24,6 +30,9 @@ def left_rectangles(f, a, b, eps=1e-2):
 
         integral_prev = integral
         n *= 2
+
+        if n >= 4194304:
+            raise Exception('Integral diverges or required precision is too low')
 
     return log
 
@@ -55,6 +64,9 @@ def right_rectangles(f, a, b, eps=1e-2):
         integral_prev = integral
         n *= 2
 
+        if n >= 4194304:
+            raise Exception('Integral diverges or required precision is too low')
+
     return log
 
 
@@ -85,6 +97,9 @@ def midpoint_rectangles(f, a, b, eps=1e-2):
 
         integral_prev = integral
         n *= 2
+
+        if n >= 4194304:
+            raise Exception('Integral diverges or required precision is too low')
 
     return log
 
@@ -118,6 +133,9 @@ def trapezoidal(f, a, b, eps=1e-2):
         integral_prev = integral
         n *= 2
 
+        if n >= 4194304:
+            raise Exception('Integral diverges or required precision is too low')
+
     return log
 
 
@@ -150,6 +168,9 @@ def simpson(f, a, b, eps=1e-2):
 
         integral_prev = integral
         n *= 2
+
+        if n >= 4194304:
+            raise Exception('Integral diverges or required precision is too low')
 
     return log
 
